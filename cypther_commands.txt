@@ -1,0 +1,101 @@
+//title.basics
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.basics_cleaned.csv' AS row
+  WITH row
+  WHERE row.tconst IS NOT NULL
+  CREATE (movie:Movie {
+      tconst: row.tconst,
+      primaryTitle: row.primaryTitle,
+      startYear: toInteger(row.startYear),
+      runtimeMinutes: CASE row.runtimeMinutes WHEN "" THEN null ELSE toInteger(row.runtimeMinutes) END,
+      genres: SPLIT(row.genres, ","),
+      averageRating: CASE row.averageRating WHEN "" THEN null ELSE toFloat(row.averageRating) END,
+      numVotes: CASE row.numVotes WHEN "" THEN null ELSE toInteger(row.numVotes) END
+  })
+} IN TRANSACTIONS OF 1000 ROWS;
+
+
+//name.basics
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///name.basics_cleaned.csv' AS row
+  WITH row
+  WHERE row.nconst IS NOT NULL
+  CREATE (person:Person {
+      nconst: row.nconst,
+      primaryName: row.primaryName,
+      primaryProfession: SPLIT(row.primaryProfession, ","),
+      knownForTitles: SPLIT(row.knownForTitles, ",")
+  })
+} IN TRANSACTIONS OF 1000 ROWS;
+
+
+//title.pricipals
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part1.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part2.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part3.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part4.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part5.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part6.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part7.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part8.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part9.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
+
+:auto CALL {
+  LOAD CSV WITH HEADERS FROM 'file:///title.principals_cleaned_part10.csv' AS row
+  MATCH (movie:Movie {tconst: row.tconst})
+  MATCH (person:Person {nconst: row.nconst})
+  CREATE (person)-[:WORKED_ON {job: row.job, characters: row.characters}]->(movie)
+} IN TRANSACTIONS OF 1000 ROWS;
