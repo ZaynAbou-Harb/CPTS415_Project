@@ -17,9 +17,9 @@ test_movie = {
     "startYear": 2024
 }
 
-#all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
-#movie_data = prepare_data(spark.createDataFrame([test_movie]), include_rating=False, all_genres=all_genres)
-#movie_vector = movie_data.select("features").na.drop()
+all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
+movie_data = prepare_data(spark.createDataFrame([test_movie]), include_rating=False, all_genres=all_genres)
+movie_vector = movie_data.select("features").na.drop()
 
 #print(movie_vector.take(1)[0].asDict())
 
@@ -27,8 +27,7 @@ data = [
     Row(features=SparseVector(26, {0: 1.0, 1: 1.0, 2: 1.0, 24: 2.0, 25: 4.0}))
 ]
 
-predictions = prediction_model.transform(spark.createDataFrame(data))
-predictions = predictions.select("prediction")
-predictions.write.csv("predictions.csv", header=True)
+predictions = prediction_model.transform(movie_vector)
+prediction = predictions.select("prediction").first()[0]
 
-#print(f"This movie's estimated rating is: {prediction}")
+print(f"This movie's estimated rating is: {prediction}")
