@@ -4,7 +4,7 @@ from pyspark.ml.classification import NaiveBayesModel
 from pyspark.ml.linalg import SparseVector
 from pyspark.sql import Row
 
-from predictor_trainer import prepare_data, model_path
+from algorithms.predictor_trainer import prepare_data, model_path
 
 spark = SparkSession.builder.getOrCreate()
 
