@@ -128,29 +128,29 @@ def clean_name_basics(input_file, output_file, title_principals_file):
 # Runs all of the functions
 def execute ():
     # tsv to csv
-    tsv_to_csv('./data/raw/name.basics.tsv', './data/processed/name.basics.csv')
-    tsv_to_csv('./data/raw/title.basics.tsv', './data/processed/title.basics.csv')
-    tsv_to_csv('./data/raw/title.principals.tsv', './data/processed/title.principals.csv')
-    tsv_to_csv('./data/raw/title.ratings.tsv', './data/processed/title.ratings.csv')   
+    tsv_to_csv('./data/raw/name.basics.tsv', './data/parsed/name.basics.csv')
+    tsv_to_csv('./data/raw/title.basics.tsv', './data/parsed/title.basics.csv')
+    tsv_to_csv('./data/raw/title.principals.tsv', './data/parsed/title.principals.csv')
+    tsv_to_csv('./data/raw/title.ratings.tsv', './data/parsed/title.ratings.csv')   
     
     # Data cleaning and processing
-    clean_title_basics('./data/processed/title.basics.csv', './data/processed/title.basics_cleaned.csv', './data/processed/title.ratings.csv')
+    clean_title_basics('./data/parsed/title.basics.csv', './data/parsed/title.basics_cleaned.csv', './data/parsed/title.ratings.csv')
     clean_title_principals(
-        './data/processed/title.principals.csv',
-        './data/processed/title.basics_cleaned.csv',
-        './data/processed/title.principals_cleaned.csv',
-        './data/processed/title.principals_cleaned_part1.csv',
-        './data/processed/title.principals_cleaned_part2.csv',
-        './data/processed/title.principals_cleaned_part3.csv',
-        './data/processed/title.principals_cleaned_part4.csv',
-        './data/processed/title.principals_cleaned_part5.csv',
-        './data/processed/title.principals_cleaned_part6.csv',
-        './data/processed/title.principals_cleaned_part7.csv',
-        './data/processed/title.principals_cleaned_part8.csv',
-        './data/processed/title.principals_cleaned_part9.csv',
-        './data/processed/title.principals_cleaned_part10.csv'
+        './data/parsed/title.principals.csv',
+        './data/parsed/title.basics_cleaned.csv',
+        './data/parsed/title.principals_cleaned.csv',
+        './data/parsed/title.principals_cleaned_part1.csv',
+        './data/parsed/title.principals_cleaned_part2.csv',
+        './data/parsed/title.principals_cleaned_part3.csv',
+        './data/parsed/title.principals_cleaned_part4.csv',
+        './data/parsed/title.principals_cleaned_part5.csv',
+        './data/parsed/title.principals_cleaned_part6.csv',
+        './data/parsed/title.principals_cleaned_part7.csv',
+        './data/parsed/title.principals_cleaned_part8.csv',
+        './data/parsed/title.principals_cleaned_part9.csv',
+        './data/parsed/title.principals_cleaned_part10.csv'
     )
-    clean_name_basics('./data/processed/name.basics.csv', './data/processed/name.basics_cleaned.csv', './data/processed/title.principals_cleaned.csv')
+    clean_name_basics('./data/parsed/name.basics.csv', './data/parsed/name.basics_cleaned.csv', './data/parsed/title.principals_cleaned.csv')
 
 # Execute all funtions
 execute()
