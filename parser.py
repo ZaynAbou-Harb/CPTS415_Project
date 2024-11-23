@@ -21,7 +21,7 @@ def clean_title_basics(input_file, output_file, ratings_file):
         'tconst': 'string',
         'titleType': 'string',
         'primaryTitle': 'string',
-        'startYear': 'string',
+        'startYear': 'string', 
         'runtimeMinutes': 'string',
         'genres': 'string',
         'isAdult': 'string'
@@ -32,7 +32,7 @@ def clean_title_basics(input_file, output_file, ratings_file):
     # Filter to keep only rows where the titleType is 'movie'
     df_filtered = df[df['titleType'] == 'movie']
     #df_filtered = df_filtered[df_filtered['startYear'] > '1979']
-
+    
     # Select only the desired columns from title.basics
     df_selected = df_filtered[['tconst', 'primaryTitle', 'startYear', 'runtimeMinutes', 'genres']]
 
@@ -55,10 +55,10 @@ def clean_title_basics(input_file, output_file, ratings_file):
 
     print(input_file + ' cleaned!')
 
-# Cleans and processes title_principals
+# Cleans and processes title_principals  
 def clean_title_principals(input_file, title_basics_file, output_file_full, *output_files):
     df_principals = pd.read_csv(input_file, delimiter=',', low_memory=False)
-
+    
     # Clean the file of '\"' before processing
     df_principals['tconst'] = df_principals['tconst'].str.replace('\"', '', regex=False)
     df_principals['nconst'] = df_principals['nconst'].str.replace('\"', '', regex=False)
@@ -66,7 +66,7 @@ def clean_title_principals(input_file, title_basics_file, output_file_full, *out
     df_principals['job'] = df_principals['job'].str.replace('\"', '', regex=False)
     df_principals['characters'] = df_principals['characters'].str.replace('\"', '', regex=False)
     print("removed substring")
-
+    
     df_basics = pd.read_csv(title_basics_file, delimiter=',', low_memory=False)
     # Get the valid tconst from title.basic
     valid_tconsts = set(df_basics['tconst'])
@@ -97,8 +97,8 @@ def clean_title_principals(input_file, title_basics_file, output_file_full, *out
 
         # Save each part to the corresponding CSV file
         df_part.to_csv(output_files[i], index=False)
-
-    print(input_file + ' cleaned and split!')
+    
+    print(input_file + ' cleaned and split!') 
 
 # Cleans and processes name_basics
 def clean_name_basics(input_file, output_file, title_principals_file):
@@ -121,35 +121,36 @@ def clean_name_basics(input_file, output_file, title_principals_file):
     df_selected = df_filtered[['nconst', 'primaryName', 'primaryProfession', 'knownForTitles']]
 
     df_selected.to_csv(output_file, index=False)
+    
+    print(input_file + ' cleaned!') 
 
-    print(input_file + ' cleaned!')
 
 # Runs all of the functions
 def execute ():
     # tsv to csv
-    tsv_to_csv('name.basics.tsv', 'name.basics.csv')
-    tsv_to_csv('title.basics.tsv', 'title.basics.csv')
-    tsv_to_csv('title.principals.tsv', 'title.principals.csv')
-    tsv_to_csv('title.ratings.tsv', 'title.ratings.csv')
-
+    tsv_to_csv('./data/raw/name.basics.tsv', './data/processed/name.basics.csv')
+    tsv_to_csv('./data/raw/title.basics.tsv', './data/processed/title.basics.csv')
+    tsv_to_csv('./data/raw/title.principals.tsv', './data/processed/title.principals.csv')
+    tsv_to_csv('./data/raw/title.ratings.tsv', './data/processed/title.ratings.csv')   
+    
     # Data cleaning and processing
-    clean_title_basics('title.basics.csv', 'title.basics_cleaned.csv', 'title.ratings.csv')
+    clean_title_basics('./data/processed/title.basics.csv', './data/processed/title.basics_cleaned.csv', './data/processed/title.ratings.csv')
     clean_title_principals(
-        'title.principals.csv',
-        'title.basics_cleaned.csv',
-        'title.principals_cleaned.csv',
-        'title.principals_cleaned_part1.csv',
-        'title.principals_cleaned_part2.csv',
-        'title.principals_cleaned_part3.csv',
-        'title.principals_cleaned_part4.csv',
-        'title.principals_cleaned_part5.csv',
-        'title.principals_cleaned_part6.csv',
-        'title.principals_cleaned_part7.csv',
-        'title.principals_cleaned_part8.csv',
-        'title.principals_cleaned_part9.csv',
-        'title.principals_cleaned_part10.csv'
+        './data/processed/title.principals.csv',
+        './data/processed/title.basics_cleaned.csv',
+        './data/processed/title.principals_cleaned.csv',
+        './data/processed/title.principals_cleaned_part1.csv',
+        './data/processed/title.principals_cleaned_part2.csv',
+        './data/processed/title.principals_cleaned_part3.csv',
+        './data/processed/title.principals_cleaned_part4.csv',
+        './data/processed/title.principals_cleaned_part5.csv',
+        './data/processed/title.principals_cleaned_part6.csv',
+        './data/processed/title.principals_cleaned_part7.csv',
+        './data/processed/title.principals_cleaned_part8.csv',
+        './data/processed/title.principals_cleaned_part9.csv',
+        './data/processed/title.principals_cleaned_part10.csv'
     )
-    clean_name_basics('name.basics.csv', 'name.basics_cleaned.csv', 'title.principals_cleaned.csv')
+    clean_name_basics('./data/processed/name.basics.csv', './data/processed/name.basics_cleaned.csv', './data/processed/title.principals_cleaned.csv')
 
 # Execute all funtions
 execute()
