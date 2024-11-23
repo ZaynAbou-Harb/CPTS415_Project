@@ -2,6 +2,7 @@ import pandas as pd
 from neo4j import GraphDatabase
 import pandas as pd
 import os
+from algorithms.predictor import predict_movie
 
 DATA_DIR = os.path.abspath("./data/result/")
 
@@ -22,3 +23,6 @@ def get_AvgRatingByGenreDecade():
 
 def get_TopGenresByDecade():
     return read_csv_from_directory("./data/result/TopGenresByDecade.csv")
+
+def predict_score(movie, spark_session):
+    return predict_movie(movie, spark_session)

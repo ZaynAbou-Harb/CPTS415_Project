@@ -5,7 +5,7 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql.functions import explode, array_contains, lit, col
 
 # Where to output the trained model
-model_path = "predictor_model"
+model_path = "algorithms/predictor_model"
 
 url = "neo4j://localhost:7687"
 username = "neo4j"

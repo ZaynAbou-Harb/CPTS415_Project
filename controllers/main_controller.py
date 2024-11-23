@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template
-from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade
+from flask import Blueprint, render_template, request, current_app
+from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score
 
 main_controller = Blueprint('main', __name__)
 
@@ -21,3 +21,27 @@ def AvgRatingByGenreDecade():
 def TopGenresByDecade():
     TopGenresByDecade_data = get_TopGenresByDecade()
     return render_template('AvgRatingByGenreDecade.html', title="Top Genres by Decade", data=TopGenresByDecade_data)
+
+all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
+
+@main_controller.route("/predictor", methods=["GET", "POST"])
+def predictor_logic():
+    if request.method == "POST":
+        spark = current_app.config['SPARK_SESSION']
+
+        # Retrieve form data
+        genres = request.form.getlist("genres")  # Gets list of selected genres
+        runtime = request.form.get("runtime")
+        release_year = request.form.get("release_year")
+
+        movie_dict = {
+            "genres": genres,
+            "runtimeMinutes": runtime,
+            "startYear": release_year
+        }
+
+        prediction = predict_score(movie_dict, spark)
+
+        return render_template("Predictor.html", genres=all_genres, result=prediction)
+
+    return render_template("Predictor.html", genres=all_genres, result=None)

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rating Predictor</title>
+</head>
+<body>
+    <h1>Movie Input Form</h1>
+    <form method="POST">
+        <!-- Genres Checkbox List -->
+        <label for="genres">Select Genres:</label><br>
+        {% for genre in genres %}
+            <input type="checkbox" name="genres" value="{{ genre }}"> {{ genre }}<br>
+        {% endfor %}
+
+        <!-- Runtime Input -->
+        <label for="runtime">Runtime (in minutes):</label><br>
+        <input type="number" name="runtime" id="runtime" required><br>
+
+        <!-- Release Year Input -->
+        <label for="release_year">Release Year:</label><br>
+        <input type="number" name="release_year" id="release_year" required><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Display Result -->
+    {% if result %}
+        <h2>Result:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>

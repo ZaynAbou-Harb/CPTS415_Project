@@ -1,33 +1,21 @@
-from pyspark.sql import SparkSession
 from pyspark.ml.classification import NaiveBayesModel
-
-from pyspark.ml.linalg import SparseVector
-from pyspark.sql import Row
-
 from algorithms.predictor_trainer import prepare_data, model_path
 
-spark = SparkSession.builder.getOrCreate()
+def predict_movie(movie_dict, spark):
+    prediction_model = NaiveBayesModel.load(model_path)
 
-prediction_model = NaiveBayesModel.load(model_path)
-print("Model loaded successfully.")
+    all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
+    movie_data = prepare_data(spark.createDataFrame([movie_dict]), include_rating=False, all_genres=all_genres)
+    movie_vector = movie_data.select("features").na.drop()
 
-test_movie = {
-    "genres": ["Action","Adventure"],
-    "runtimeMinutes": 150,
-    "startYear": 2024
-}
+    predictions = prediction_model.transform(movie_vector)
+    prediction = predictions.select("prediction").first()[0]
+    #prediction = 1.0
 
-all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
-movie_data = prepare_data(spark.createDataFrame([test_movie]), include_rating=False, all_genres=all_genres)
-movie_vector = movie_data.select("features").na.drop()
+    results_output = [
+        "This movie is estimated to get an average score of 0-4! Probably not the best...",
+        "This movie is estimated to get an average score of 4-7! It might be worth watching.",
+        "This movie is estimated to get an average score of 7-10! Sounds like a great watch!"
+    ]
 
-#print(movie_vector.take(1)[0].asDict())
-
-data = [
-    Row(features=SparseVector(26, {0: 1.0, 1: 1.0, 2: 1.0, 24: 2.0, 25: 4.0}))
-]
-
-predictions = prediction_model.transform(movie_vector)
-prediction = predictions.select("prediction").first()[0]
-
-print(f"This movie's estimated rating is: {prediction}")
+    return results_output[int(prediction)]
