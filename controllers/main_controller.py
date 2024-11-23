@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, current_app
-from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score
-from algorithms.CypherBasedFunctions import average_rating_for_actor_director
+from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score, get_AvgRatingActorDirector
 
 main_controller = Blueprint('main', __name__)
 
