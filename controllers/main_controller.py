@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, current_app
-from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score
-from algorithms.CypherBasedFunctions import average_rating_for_actor_director
+from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score, get_AvgRatingActorDirector
 
 main_controller = Blueprint('main', __name__)
 
@@ -29,14 +28,14 @@ def AvgRatingActorDirector():
     if request.method == 'POST':
         actor_name = request.form.get('actor_name')
         director_name = request.form.get('director_name')
-        avg_rating = average_rating_for_actor_director(actor_name, director_name)
-
+        avg_rating = get_AvgRatingActorDirector(actor_name, director_name)
+        
         # Check if the result is None
         if avg_rating is None:
             message = f"No data found for Actor: {actor_name} and Director: {director_name}."
             return render_template('AvgRatingActorDirector.html', message=message, actor_name=actor_name, director_name=director_name)
         # If data is found
-        else:
+        else:   
             return render_template('AvgRatingActorDirector.html', avg_rating=avg_rating, actor_name=actor_name, director_name=director_name)
     return render_template('AvgRatingActorDirector.html')
 
