@@ -40,6 +40,8 @@ def AvgRatingActorDirector():
             return render_template('AvgRatingActorDirector.html', avg_rating=avg_rating, actor_name=actor_name, director_name=director_name)
     return render_template('AvgRatingActorDirector.html')
 
+all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
+
 @main_controller.route("/predictor", methods=["GET", "POST"])
 def predictor_logic():
     if request.method == "POST":
