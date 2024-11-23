@@ -3,7 +3,7 @@ from neo4j import GraphDatabase
 import pandas as pd
 import os
 from algorithms.predictor import predict_movie
-from CypherBasedFunctions import average_rating_for_actor_director
+from algorithms.CypherBasedFunctions import average_rating_for_actor_director
 
 
 DATA_DIR = os.path.abspath("./data/result/")
