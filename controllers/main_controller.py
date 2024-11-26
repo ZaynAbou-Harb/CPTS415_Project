@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, render_template, request, current_app, jsonify
 from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, get_mostPopularGenreActorDirector, predict_score, get_AvgRatingActorDirector, get_most_popular_genre, get_rating_trends, get_graph
 
 main_controller = Blueprint('main', __name__)
@@ -6,6 +6,21 @@ main_controller = Blueprint('main', __name__)
 @main_controller.route('/')
 def index():
     return render_template('index.html')
+
+PAGES = [
+    {"name": "Home", "url": "/"},
+    {"name": "Average Ratings by 10-Minute Interval", "url": "/AvgRatingFor10MinMovie_route"},
+    {"name": "Average Ratings by Genre and Decade", "url": "/AvgRatingByGenreDecade_route"},
+    {"name": "Top Genres by Decade", "url": "/TopGenresByDecade_route"},
+    {"name": "Average Rating for Actor and Director", "url": "/average_rating_for_actor_director_route"},
+    {"name": "Predict Score for Hypothetical Movie", "url": "/predictor"},
+]
+
+@main_controller.route('/search', methods=['GET'])
+def search():
+    keyword = request.args.get('q', '').lower()
+    results = [page for page in PAGES if keyword in page["name"].lower()]
+    return jsonify(results)
 
 @main_controller.route('/AvgRatingFor10MinMovie_route')
 def AvgRatingFor10MinMovie():
