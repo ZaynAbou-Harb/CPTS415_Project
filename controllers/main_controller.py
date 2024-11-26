@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, current_app
-from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score, get_AvgRatingActorDirector
+from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, get_mostPopularGenreActorDirector, predict_score, get_AvgRatingActorDirector, get_most_popular_genre, get_rating_trends, get_graph
 
 main_controller = Blueprint('main', __name__)
 
@@ -22,6 +22,12 @@ def TopGenresByDecade():
     TopGenresByDecade_data = get_TopGenresByDecade()
     return render_template('AvgRatingByGenreDecade.html', title="Top Genres by Decade", data=TopGenresByDecade_data)
 
+@main_controller.route('/mostPopularGenreActorDirector_route')
+def mostPopularDenreActorDirector():
+    mostPopularDenreActorDirector_data = get_mostPopularGenreActorDirector()
+    return render_template('mostPopularGenreActorDirector.html', title="Most Popular Genre For Each Actor/Actress and Director", data=mostPopularDenreActorDirector_data)
+
+
 @main_controller.route('/average_rating_for_actor_director_route', methods=['GET', 'POST'])
 def AvgRatingActorDirector():
     # Get actor and director names from request arguments
@@ -38,6 +44,23 @@ def AvgRatingActorDirector():
         else:   
             return render_template('AvgRatingActorDirector.html', avg_rating=avg_rating, actor_name=actor_name, director_name=director_name)
     return render_template('AvgRatingActorDirector.html')
+
+@main_controller.route('/individualStatistics_route', methods=['GET', 'POST'])
+def individual_statistics():
+    # Get person name from request arguments
+    if request.method == 'POST':
+        person_name = request.form.get('person_name')
+        genre = get_most_popular_genre(person_name)
+        rating_trends = get_rating_trends(person_name)
+        
+        # Check if the result is None
+        if genre is None:
+            message = f"No data found for {person_name}."
+            return render_template('individualStatistics.html', message=message, person_name=person_name)
+        # If data is found
+        else:   
+            return render_template('individualStatistics.html', genre=genre, rating_trends=rating_trends, person_name=person_name)
+    return render_template('individualStatistics.html')
 
 all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
 
@@ -62,3 +85,14 @@ def predictor_logic():
         return render_template("Predictor.html", genres=all_genres, result=prediction)
 
     return render_template("Predictor.html", genres=all_genres, result=None)
+
+@main_controller.route('/search_graph', methods=['GET', 'POST'])
+def search_graph():
+    if request.method == 'POST':
+        search_query = request.form.get('search_query')
+        search_type = request.form.get('search_type')
+        nNodes = request.form.get('num_nodes')
+        
+        path = get_graph(search_query, search_type, int(nNodes))
+        return render_template('searchGraph.html', image_path=path)
+    return render_template("searchGraph.html")

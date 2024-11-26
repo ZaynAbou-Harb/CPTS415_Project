@@ -1,5 +1,9 @@
 from neo4j import GraphDatabase
+import matplotlib.pyplot as plt
 import csv
+import sys
+import os
+
 
 # 1. Average rating for an actor + director
 def average_rating_for_actor_director(actor_name, director_name):
@@ -7,7 +11,10 @@ def average_rating_for_actor_director(actor_name, director_name):
     MATCH (actor:Person {{primaryName: '{actor_name}'}})-[:WORKED_ON]->(m:Movie)<-[:WORKED_ON]-(director:Person {{primaryName: '{director_name}'}})
     RETURN avg(m.averageRating) as avg_rating
     """
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "neo4j"))
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from algorithms.credentialHandler import getCredentials
+    url, username, password = getCredentials()
+    driver = GraphDatabase.driver(url, auth=(username, password))
     with driver.session() as session:
         output = session.run(query)
         result = output.data()
@@ -15,16 +22,49 @@ def average_rating_for_actor_director(actor_name, director_name):
 
 # 2. Rating trends over time for actors and directors
 def rating_trends_over_time(person_name):
+    # Define the query
     query = f"""
     MATCH (p:Person {{primaryName: '{person_name}'}})-[:WORKED_ON]->(m:Movie)
     RETURN m.startYear AS year, avg(m.averageRating) AS avg_rating
     ORDER BY year
     """
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "neo4j"))
+    
+    # Import credentials and establish a Neo4j connection
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from algorithms.credentialHandler import getCredentials
+    url, username, password = getCredentials()
+    driver = GraphDatabase.driver(url, auth=(username, password))
+    
+    # Execute the query
     with driver.session() as session:
         output = session.run(query)
         result = output.data()
-    return [(row["year"], row["avg_rating"]) for row in result]
+
+    # Extract data from query result
+    trends = [(row["year"], row["avg_rating"]) for row in result]
+    
+    # Plot the data
+    if trends:  # Check if there is data to plot
+        years, avg_ratings = zip(*trends)  # Unzip the data
+        plt.figure(figsize=(10, 6))
+        plt.plot(years, avg_ratings, marker='o', linestyle='-', color='blue')
+        plt.title(f'Rating Trends Over Time for {person_name}')
+        plt.xlabel('Year')
+        plt.ylabel('Average Rating')
+        plt.grid(True)
+        plt.tight_layout()
+        
+        # Save the plot as a PNG file
+        output_dir = os.path.join("static", "plots")
+        os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
+        plot_path = os.path.join(output_dir, "rating_trends.png")
+        plt.savefig(plot_path)
+        plt.close()  # Close the plot to free memory
+        print(f"Plot saved to {plot_path}")
+    else:
+        print("No data available for the plot.")
+    
+    return trends
 
 # 3. Most popular genre for an actor or director
 def most_popular_genre(person_name):
@@ -35,7 +75,10 @@ def most_popular_genre(person_name):
     ORDER BY avg_rating DESC
     LIMIT 1
     """
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "neo4j"))
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from algorithms.credentialHandler import getCredentials
+    url, username, password = getCredentials()
+    driver = GraphDatabase.driver(url, auth=(username, password))
     with driver.session() as session:
         output = session.run(query)
         result = output.data()
@@ -50,7 +93,10 @@ def top_rated_actor_director_avg():
     LIMIT 1
     RETURN actor.primaryName AS actor_name, director.primaryName AS director_name, avg_rating
     """
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "neo4j"))
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from algorithms.credentialHandler import getCredentials
+    url, username, password = getCredentials()
+    driver = GraphDatabase.driver(url, auth=(username, password))
     with driver.session() as session:
         output = session.run(query)
         result = output.data()
@@ -68,7 +114,10 @@ def most_popular_genre_for_all():
     WITH person, collect({genre: genre, avg_rating: avg_rating}) AS genre_ratings
     RETURN person, genre_ratings[0].genre AS most_popular_genre, genre_ratings[0].avg_rating AS avg_rating
     """
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "neo4j"))
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from algorithms.credentialHandler import getCredentials
+    url, username, password = getCredentials()
+    driver = GraphDatabase.driver(url, auth=(username, password))   
     with driver.session() as session:
         output = session.run(query)
         result = output.data()
@@ -89,21 +138,3 @@ def most_popular_genre_for_all():
         writer.writerows(processed_data)
     
     print(f"Data successfully written to {csv_file}")
-
-
-# Example usages of functions
-if __name__ == "__main__":
-    print("Average Rating for Actor + Director:", average_rating_for_actor_director("Tom Cruise", "Joseph Kosinski"))
-    print("Rating Trends Over Time:", rating_trends_over_time("Tom Cruise"))
-    
-    name = "Tom Cruise"
-    popular_genre = most_popular_genre(name)
-    if popular_genre:
-        print(f"The most popular genre for {name} based on average rating is {popular_genre}.")
-    else:
-        print(f"No genre data found for {name}.")
-
-    
-    #print("Top Rated Actor + Director Average:", top_rated_actor_director_avg()) # This command was replaced with spark version (See topRatedActorDirectorAvg.py)
-    
-    most_popular_genre_for_all()

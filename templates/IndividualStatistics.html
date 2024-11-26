@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Individual Statistics for Actor or Director</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style_sheet.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Individual Statistics for Actor or Director</h1>
+    <form method="POST" action="/individualStatistics_route">
+      <label for="person_name">Person Name:</label>
+      <input type="text" id="person_name" name="person_name" required />
+      <br />
+      <button type="submit">Get Average Rating</button>
+    </form>
+
+    <br />
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %} {% if genre %}
+    <h3>{{ person_name }}'s Most Popular Genre is</h3>
+    <h2>{{ genre }}</h2>
+    <br />
+    {% endif %} {% if rating_trends %}
+    <img
+      src="{{ url_for('static', filename='plots/rating_trends.png') }}"
+      alt="Rating Trends Plot"
+    />
+    {% endif %}
+
+    <br />
+    <a href="/">Back to Home</a>
+  </body>
+</html>

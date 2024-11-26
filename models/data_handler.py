@@ -3,8 +3,8 @@ from neo4j import GraphDatabase
 import pandas as pd
 import os
 from algorithms.predictor import predict_movie
-from algorithms.CypherBasedFunctions import average_rating_for_actor_director
-
+from algorithms.CypherBasedFunctions import average_rating_for_actor_director, most_popular_genre, rating_trends_over_time
+from algorithms.vizualizeGraph import get_edges_and_nodes, create_and_save_custom_graph
 
 DATA_DIR = os.path.abspath("./data/result/")
 
@@ -23,6 +23,9 @@ def get_AvgRatingFor10MinMovie():
 def get_AvgRatingByGenreDecade():
     return read_csv_from_directory("./data/result/AvgRatingByGenreDecade.csv")
 
+def get_mostPopularGenreActorDirector():
+    return read_csv_from_directory("./data/result/mostPopularGenreActorDirector.csv")
+
 def get_TopGenresByDecade():
     return read_csv_from_directory("./data/result/TopGenresByDecade.csv")
 
@@ -31,3 +34,14 @@ def predict_score(movie, spark_session):
 
 def get_AvgRatingActorDirector(actor_name, director_name):
     return average_rating_for_actor_director(actor_name, director_name)
+
+def get_most_popular_genre(person_name):
+    return most_popular_genre(person_name)
+
+def get_rating_trends(person_name):
+    return rating_trends_over_time(person_name)
+
+def get_graph(search_query, search_type, nNodes):
+    graph_data = get_edges_and_nodes(search_query, search_type, nNodes)
+    create_and_save_custom_graph(graph_data,search_query, search_type, nNodes, "static/plots/graph.png")
+    return "static/plots/graph.png"

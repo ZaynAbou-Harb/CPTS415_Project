@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Graph</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style_sheet.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Search for Graph Data</h1>
+      <form method="POST" action="/search_graph">
+        <label for="search_type">Search by:</label>
+        <select name="search_type" id="search_type">
+          <option value="primaryName">Person</option>
+          <option value="primaryTitle">Movie</option>
+        </select>
+
+        <label for="search_query">Search Query:</label>
+        <input type="text" id="search_query" name="search_query" required />
+
+        <label for="num_nodes">Number of Nodes:</label>
+        <select name="num_nodes" id="num_nodes">
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+          <option value="300">300</option>
+        </select>
+
+        <button type="submit">Generate Graph</button>
+      </form>
+
+      {% if image_path %}
+      <div class="result">
+        <h2>Generated Graph</h2>
+        <img src="{{ image_path }}" alt="Graph Image" width="80%" />
+      </div>
+      {% endif %}
+    </div>
+    <br />
+    <a href="/">Back to Home</a>
+  </body>
+</html>
