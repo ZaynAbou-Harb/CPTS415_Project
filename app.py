@@ -12,7 +12,7 @@ dbname = "neo4j"
 
 spark = (
     SparkSession.builder
-    .config("spark.jars", "file:///C:/Users/eunic/spark-3.5.3-bin-hadoop3/jars/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar")
+    .config("spark.jars", "file:///C:/Users/zgoos/Downloads/spark-3.5.3-bin-hadoop3/jars/neo4j-spark-connector-5.3.1-s_2.12.jar")
     .config("spark.neo4j.url", url)
     .config("spark.neo4j.authentication.basic.username", username)
     .config("spark.neo4j.authentication.basic.password", password)
