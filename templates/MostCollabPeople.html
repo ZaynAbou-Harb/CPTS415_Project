@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People with the Most Movie Collaborations</title>
+</head>
+
+<body>
+    <h1>Pairs of Most Collaborated Actors or Directors</h1>
+    <form method="POST" action="/MostCollabPeople_route">
+        <label for="year">Year of Collaborations:</label>
+        <input type="number" id="year" name="year" min= "1950" max="2023" required>
+        <br>
+        <label for="primary_profession">Primary Profession:</label><br>
+        {% for profession in professions %}
+            <input type="checkbox" name="professions" value="{{ profession }}"> {{ profession }}<br>
+        {% endfor %}
+        <br>
+        <button type="submit">Enter</button>
+    </form>
+
+    {% if results %}
+        <h2>Top Collaborations:</h2>
+        <table border="1">
+            <thread>
+                <tr>
+                    <th>Person 1</th>
+                    <th>Person 2</th>
+                    <th>Number of Collabs</th>
+                    <th>Collaborated Movies</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{result.person1}}</td>
+                        <td>{{result.person2}}</td>
+                        <td>{{result.collab_count}}</td>
+                        <td>{{ result.movie_list | join(', ') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+</body>
+
+</html>
