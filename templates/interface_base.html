@@ -1,0 +1,42 @@
+<!-- Base interface inherited by other render templates -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }} - 4NF Web App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/style_sheet.css">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/navbar.js"></script>
+
+    <script>
+            const navItems = [
+                { name: 'Home', path: "{{ url_for('main.index') }}" },
+
+            ];
+    </script>
+</head>
+<body>
+    <div id="topnav"></div>
+    <script>document.getElementById('topnav').innerHTML = generateNavbar(navItems);</script>
+    
+    <div class="content" style="z-index: 1; position: relative;">
+        <!-- CONTENT BLOCK FOR TEMPLATING -->
+        {% block content %} {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <p>Made by 4NF group</p>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
