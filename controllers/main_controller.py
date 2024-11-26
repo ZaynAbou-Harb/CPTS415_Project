@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, current_app
-from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score, get_AvgRatingActorDirector
+from models.data_handler import get_AvgRatingFor10MinMovie, get_AvgRatingByGenreDecade, get_TopGenresByDecade, predict_score, get_AvgRatingActorDirector, get_MostCollabPeople
 
 main_controller = Blueprint('main', __name__)
 
@@ -62,3 +62,22 @@ def predictor_logic():
         return render_template("Predictor.html", genres=all_genres, result=prediction)
 
     return render_template("Predictor.html", genres=all_genres, result=None)
+
+all_professions = ['actor', 'actress', 'director']
+@main_controller.route('/MostCollabPeople_route', methods=["GET", "POST"])
+def MostCollabPeople():
+    if request.method == "POST":
+        spark = current_app.config['SPARK_SESSION']
+
+        year = request.form['year']
+        selected_professions = request.form.getlist('professions')
+        collabs = get_MostCollabPeople(year, selected_professions, spark)
+
+        if collabs is None: 
+            message = "No collaborations found please try again."
+            return render_template('MostCollabPeople.html', message=message, professions=all_professions)
+
+        else: 
+            return render_template('MostCollabPeople.html', results=collabs, professions=all_professions)        
+    
+    return render_template('MostCollabPeople.html', title="People with the most movie collaborations", professions=all_professions)

@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from algorithms.predictor import predict_movie
 from algorithms.CypherBasedFunctions import average_rating_for_actor_director
+from algorithms.collab_movies import most_collab
 
 
 DATA_DIR = os.path.abspath("./data/result/")
@@ -31,3 +32,6 @@ def predict_score(movie, spark_session):
 
 def get_AvgRatingActorDirector(actor_name, director_name):
     return average_rating_for_actor_director(actor_name, director_name)
+
+def get_MostCollabPeople(year, professions, spark): 
+   return most_collab(year, professions, spark) 
