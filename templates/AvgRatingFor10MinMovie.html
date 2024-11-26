@@ -1,29 +1,26 @@
-{% extends 'interface_base.html' %}
-{% block content %}
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="/static/css/style_sheet_1.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/style_sheet.css" />
+  </head>
+  <body>
     <h1>{{ title }}</h1>
     <table>
-        <tr>
-            {% for col in data.columns %}
-            <th>{{ col }}</th>
-            {% endfor %}
-        </tr>
-        {% for row in data.itertuples() %}
-        <tr>
-            {% for value in row[1:] %}
-            <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
+      <tr>
+        {% for col in data.columns %}
+        <th>{{ col }}</th>
         {% endfor %}
+      </tr>
+      {% for row in data.itertuples() %}
+      <tr>
+        {% for value in row[1:] %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
     </table>
-    <br>
-    <a href="/">Back to Home</a>
-</body>
+    <br />
+    <a id="back-to-home" href="/">Back to Home</a>
+  </body>
 </html>
-{% endblock %}

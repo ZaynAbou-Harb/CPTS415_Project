@@ -1,37 +1,46 @@
-{% extends 'interface_base.html' %}
-{% block content %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Movie Rating Predictor</title>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style_sheet.css') }}"
+    />
+  </head>
+  <body>
     <h1>Movie Input Form</h1>
     <form method="POST">
-        <!-- Genres Checkbox List -->
-        <label for="genres">Select Genres:</label><br>
-        {% for genre in genres %}
-            <input type="checkbox" name="genres" value="{{ genre }}"> {{ genre }}<br>
-        {% endfor %}
+      <!-- Genres Checkbox List -->
+      <label for="genres">Select Genres:</label><br />
+      {% for genre in genres %}
+      <input type="checkbox" name="genres" value="{{ genre }}" /> {{ genre }}<br />
+      {% endfor %}
 
-        <!-- Runtime Input -->
-        <label for="runtime">Runtime (in minutes):</label><br>
-        <input type="number" name="runtime" id="runtime" required><br>
+      <!-- Runtime Input -->
+      <label for="runtime">Runtime (in minutes):</label><br />
+      <input type="number" name="runtime" id="runtime" required /><br />
 
-        <!-- Release Year Input -->
-        <label for="release_year">Release Year:</label><br>
-        <input type="number" name="release_year" id="release_year" required><br><br>
+      <!-- Release Year Input -->
+      <label for="release_year">Release Year:</label><br />
+      <input
+        type="number"
+        name="release_year"
+        id="release_year"
+        required
+      /><br /><br />
 
-        <!-- Submit Button -->
-        <button type="submit">Submit</button>
+      <!-- Submit Button -->
+      <button type="submit">Submit</button>
     </form>
 
     <!-- Display Result -->
     {% if result %}
-        <h2>Result:</h2>
-        <p>{{ result }}</p>
+    <h2>Result:</h2>
+    <p>{{ result }}</p>
     {% endif %}
-</body>
+
+    <br />
+    <a id="back-to-home" href="/">Back to Home</a>
+  </body>
 </html>
-{% endblock %}

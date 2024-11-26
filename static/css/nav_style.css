@@ -1,0 +1,138 @@
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  position: sticky;
+  top: 0;
+  padding-top: 2px;
+  padding-bottom: 4px;
+  z-index: 999;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: grey;
+  color: white;
+}
+
+.topnav .search-container {
+  float: right;
+  position: relative;
+}
+
+.topnav input[type="text"] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  margin-left: 8px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+.topnav-pfp {
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+}
+
+.topnav-pfp img {
+  display: inline-block;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a,
+  .topnav input[type="text"],
+  .topnav .search-container button {
+    float: none;
+    display: inline-block;
+    text-align: left;
+    width: 25%;
+    margin: 0;
+    padding: 14px;
+  }
+
+  .topnav-pfp {
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    flex: none;
+    margin-right: 5px;
+  }
+
+  .topnav-pfp img {
+    display: inline-block;
+    margin: 0 auto;
+    height: 32px;
+    width: 32px;
+  }
+
+  #userBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+  }
+}
+
+.dropdown-global {
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  width: auto;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.dropdown-global div {
+  padding: 6px;
+  cursor: pointer;
+  background-color: white;
+  font-size: inherit;
+}
+
+.dropdown-global div:hover {
+  background-color: #f1f1f1;
+}
