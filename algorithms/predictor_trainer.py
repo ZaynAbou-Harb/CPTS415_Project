@@ -88,21 +88,21 @@ def train_model(vectorized_data):
     training_data = vectorized_data.select("features", "ratingCategory").na.drop()
 
     # Train-test split
-    train_data, test_data = training_data.randomSplit([0.8, 0.2], seed=5)
+    # train_data, test_data = training_data.randomSplit([0.9, 0.1], seed=42)
 
-    print(test_data.take(1)[0].asDict())
+    # print(test_data.take(1)[0].asDict())
 
     # Train model
     nb = NaiveBayes(featuresCol="features", labelCol="ratingCategory", modelType="multinomial")
-    model = nb.fit(train_data)
+    model = nb.fit(training_data)
 
     # Evaluate model
-    predictions = model.transform(test_data)
-    evaluator = MulticlassClassificationEvaluator(
-        labelCol="ratingCategory", predictionCol="prediction", metricName="accuracy")
+    #predictions = model.transform(test_data)
+    #evaluator = MulticlassClassificationEvaluator(
+    #    labelCol="ratingCategory", predictionCol="prediction", metricName="accuracy")
 
-    accuracy = evaluator.evaluate(predictions)
-    print(f"Accuracy: {accuracy * 100:.2f}%")
+    #accuracy = evaluator.evaluate(predictions)
+    #print(f"Accuracy: {accuracy * 100:.2f}%")
 
     return model
 
