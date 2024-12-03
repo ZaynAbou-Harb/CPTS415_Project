@@ -93,6 +93,12 @@ def predictor_logic():
         runtime = request.form.get("runtime")
         release_year = request.form.get("release_year")
 
+        if not runtime:
+            runtime = 120
+
+        if not release_year:
+            release_year = 2000
+
         movie_dict = {
             "genres": genres,
             "runtimeMinutes": runtime,
