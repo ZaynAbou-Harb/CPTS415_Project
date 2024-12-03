@@ -1,8 +1,7 @@
-from pyspark.ml.classification import NaiveBayesModel
-from algorithms.predictor_trainer import prepare_data, model_path
+from algorithms.predictor_trainer import prepare_data
 
-def predict_movie(movie_dict, spark):
-    prediction_model = NaiveBayesModel.load(model_path)
+def predict_movie(prediction_model, movie_dict, spark):
+    #prediction_model = NaiveBayesModel.load(model_path)
 
     all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Documentary', 'Family', 'Fantasy', 'Adult', 'History', 'Mystery', 'Musical', 'Animation', 'Music', 'Film-Noir', 'Horror', 'Western', 'Biography', 'Comedy', 'Action', 'Sport', 'Sci-Fi', 'News']
     movie_data = prepare_data(spark.createDataFrame([movie_dict]), include_rating=False, all_genres=all_genres)

@@ -87,6 +87,7 @@ all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Docu
 def predictor_logic():
     if request.method == "POST":
         spark = current_app.config['SPARK_SESSION']
+        prediction_model = current_app.config['PREDICTION_MODEL']
 
         # Retrieve form data
         genres = request.form.getlist("genres")  # Gets list of selected genres
@@ -105,7 +106,7 @@ def predictor_logic():
             "startYear": release_year
         }
 
-        prediction = predict_score(movie_dict, spark)
+        prediction = predict_score(prediction_model, movie_dict, spark)
 
         return render_template("Predictor.html", genres=all_genres, result=prediction)
 
