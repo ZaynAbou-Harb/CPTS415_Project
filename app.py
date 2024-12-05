@@ -1,6 +1,7 @@
 from flask import Flask
 from pyspark.sql import SparkSession
 from controllers.main_controller import main_controller
+from pyspark.ml.classification import NaiveBayesModel
 
 app = Flask(__name__)
 app.register_blueprint(main_controller)
@@ -20,7 +21,10 @@ spark = (
     .getOrCreate()
 )
 
+prediction_model = NaiveBayesModel.load("algorithms/predictor_model")
+
 app.config['SPARK_SESSION'] = spark
+app.config['PREDICTION_MODEL'] = prediction_model
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

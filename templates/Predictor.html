@@ -19,7 +19,14 @@
 
       <!-- Runtime Input -->
       <label for="runtime">Runtime (in minutes):</label><br />
-      <input type="number" name="runtime" id="runtime" required /><br />
+      <input
+        type="number"
+        name="runtime"
+        min="0"
+        max="1000"
+        id="runtime"
+        required
+      /><br />
 
       <!-- Release Year Input -->
       <label for="release_year">Release Year:</label><br />
@@ -27,6 +34,8 @@
         type="number"
         name="release_year"
         id="release_year"
+        min="1920"
+        max="2023"
         required
       /><br /><br />
 

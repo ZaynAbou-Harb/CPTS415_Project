@@ -42,9 +42,29 @@ def TopGenresByDecade():
     return render_template('AvgRatingByGenreDecade.html', title="Top Genres by Decade", data=TopGenresByDecade_data)
 
 @main_controller.route('/mostPopularGenreActorDirector_route')
-def mostPopularDenreActorDirector():
-    mostPopularDenreActorDirector_data = get_mostPopularGenreActorDirector()
-    return render_template('mostPopularGenreActorDirector.html', title="Most Popular Genre For Each Actor/Actress and Director", data=mostPopularDenreActorDirector_data)
+def mostPopularGenreActorDirector():
+    page = int(request.args.get('page', 1))
+    per_page = 20
+
+    mostPopularGenreActorDirector_data = get_mostPopularGenreActorDirector()
+
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+
+    paginated_data = mostPopularGenreActorDirector_data.iloc[start_idx:end_idx]
+
+    total_entries = len(mostPopularGenreActorDirector_data)
+    has_next = end_idx < total_entries
+    has_prev = start_idx > 0
+
+    return render_template(
+        'mostPopularGenreActorDirector.html',
+        title="Most Popular Genre For Each Actor/Actress and Director",
+        data=paginated_data,
+        page=page,
+        has_next=has_next,
+        has_prev=has_prev,
+    )
 
 
 @main_controller.route('/average_rating_for_actor_director_route', methods=['GET', 'POST'])
@@ -87,11 +107,18 @@ all_genres = ['Crime', 'Romance', 'Thriller', 'Adventure', 'Drama', 'War', 'Docu
 def predictor_logic():
     if request.method == "POST":
         spark = current_app.config['SPARK_SESSION']
+        prediction_model = current_app.config['PREDICTION_MODEL']
 
         # Retrieve form data
         genres = request.form.getlist("genres")  # Gets list of selected genres
         runtime = request.form.get("runtime")
         release_year = request.form.get("release_year")
+
+        if not runtime:
+            runtime = 120
+
+        if not release_year:
+            release_year = 2000
 
         movie_dict = {
             "genres": genres,
@@ -99,7 +126,7 @@ def predictor_logic():
             "startYear": release_year
         }
 
-        prediction = predict_score(movie_dict, spark)
+        prediction = predict_score(prediction_model, movie_dict, spark)
 
         return render_template("Predictor.html", genres=all_genres, result=prediction)
 
@@ -132,5 +159,7 @@ def search_graph():
         nNodes = request.form.get('num_nodes')
 
         path = get_graph(search_query, search_type, int(nNodes))
+        if path is None:
+            return render_template('searchGraph.html', message=f"There is no data on {search_query}")
         return render_template('searchGraph.html', image_path=path)
     return render_template("searchGraph.html")

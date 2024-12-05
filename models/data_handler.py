@@ -31,8 +31,8 @@ def get_mostPopularGenreActorDirector():
 def get_TopGenresByDecade():
     return read_csv_from_directory("./data/result/TopGenresByDecade.csv")
 
-def predict_score(movie, spark_session):
-    return predict_movie(movie, spark_session)
+def predict_score(prediction_model, movie, spark_session):
+    return predict_movie(prediction_model, movie, spark_session)
 
 def get_AvgRatingActorDirector(actor_name, director_name):
     return average_rating_for_actor_director(actor_name, director_name)
@@ -56,8 +56,10 @@ def get_rating_trends(person_name):
 
 def get_graph(search_query, search_type, nNodes):
     graph_data = get_edges_and_nodes(search_query, search_type, nNodes)
+    if graph_data is None:
+        return None
     create_and_save_custom_graph(graph_data,search_query, search_type, nNodes, "static/plots/graph.png")
     return "static/plots/graph.png"
 
-def get_MostCollabPeople(year, professions, spark): 
-   return most_collab(year, professions, spark) 
+def get_MostCollabPeople(year, professions, spark):
+   return most_collab(year, professions, spark)

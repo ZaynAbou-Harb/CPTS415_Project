@@ -14,7 +14,8 @@ def get_edges_and_nodes(search_query, search_type, nNodes):
 
     :param search_query: The value to search for in the database.
     :param search_type: The type of search ('primaryName' or 'primaryTitle').
-    :return: A dictionary containing nodes and edges.
+    :param nNodes: The number of nodes to return in the result.
+    :return: A dictionary containing nodes and edges, or None if no results are found.
     """
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from algorithms.credentialHandler import getCredentials
@@ -65,6 +66,10 @@ def get_edges_and_nodes(search_query, search_type, nNodes):
 
     # Convert nodes dict to a list
     node_list = list(nodes.values())
+
+    # Validate if nodes or edges are empty
+    if not node_list and not edges:
+        return None
 
     # Return the nodes and edges
     return {"nodes": node_list, "edges": edges}
@@ -173,5 +178,6 @@ def create_and_save_custom_graph(graph_data, search_query, search_type, nNodes, 
 
     # Save the graph to a file
     plt.title("Customized Graph Visualization", fontsize=16)
+    os.makedirs("static/plots/", exist_ok=True)
     plt.savefig(output_file, dpi=300)
     plt.close()  

@@ -33,7 +33,10 @@
         <button type="submit">Generate Graph</button>
       </form>
 
-      {% if image_path %}
+      {% if message %}
+      <br />
+      <h2>{{message}}</h2>
+      {% endif %} {% if image_path %}
       <div class="result">
         <h2>Generated Graph</h2>
         <img src="{{ image_path }}" alt="Graph Image" width="80%" />

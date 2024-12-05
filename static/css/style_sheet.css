@@ -136,3 +136,27 @@ table tr:hover {
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination-container a {
+  text-decoration: none;
+  color: #007bff;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.pagination-container a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination-container span {
+  font-weight: bold;
+}
