@@ -109,7 +109,7 @@ def train_model(vectorized_data):
 if '__main__' == __name__:
     spark = (
         SparkSession.builder.config("neo4j.url", url)
-        .config("spark.jars", "file:///C:/Users/zgoos/Downloads/spark-3.5.3-bin-hadoop3/jars/neo4j-spark-connector-5.3.1-s_2.12.jar")
+        .config("spark.jars", "file:///C:/Users/eunic/spark-3.5.3-bin-hadoop3/jars/neo4j-connector-apache-spark_2.12-5.3.2_for_spark_3.jar")
         .getOrCreate()
     )
 
