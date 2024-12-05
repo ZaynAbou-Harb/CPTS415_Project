@@ -60,46 +60,44 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdown.style.display = "block";
   });
 
-  searchInput.addEventListener("input", async () => {
-    const query = searchInput.value.trim();
-    if (query.length === 0) {
-      dropdown.style.display = "none";
-      dropdown.innerHTML = "";
-      return;
-    }
-
-    try {
-      // Fetch search results from the backend
+searchForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent default form submission
+  
+      const query = searchInput.value.trim().toLowerCase();
+  
+      // Check if the input is empty
+      if (!query) {
+          alert('Please enter the content you want to search.');
+          window.location.href = '/'; // Redirect to the home page
+          return;
+      }
+  
+      // Fetch search results
       const response = await fetch(`/search?q=${query}`);
       const results = await response.json();
-
-      dropdown.innerHTML = "";
-
+  
+      // Handle no matching results
       if (results.length === 0) {
-        dropdown.style.display = "none";
-        return;
+          alert('The page you are looking for does not exist. Redirecting to the home page.');
+          window.location.href = '/'; // Redirect to the home page
+          return;
       }
-
-      results.forEach((result) => {
-        const item = document.createElement("div");
-        item.textContent = result.name;
-        item.style.padding = "8px";
-        item.style.cursor = "pointer";
-        item.addEventListener("click", () => {
-          window.location.href = result.url; // Navigate to the selected page
-        });
-        dropdown.appendChild(item);
-      });
-
-      dropdown.style.display = "block";
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
+  
+      // Check for an exact match
+      const exactMatch = results.find(result => result.name.toLowerCase() === query);
+  
+      if (exactMatch) {
+          window.location.href = exactMatch.url; // Redirect to the exact match
+          return;
+      }
+  
+      // Show dropdown for multiple results
+      dropdown.innerHTML = results.map(result => `
+          <div style="padding: 8px; cursor: pointer;" onclick="window.location.href='${result.url}'">
+              ${result.name}
+          </div>
+      `).join('');
+      dropdown.style.display = 'block';
   });
-
-  document.addEventListener("click", (e) => {
-    if (!searchContainer.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = "none";
-    }
-  });
+  
 });
