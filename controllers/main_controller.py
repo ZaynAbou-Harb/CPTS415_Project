@@ -42,9 +42,29 @@ def TopGenresByDecade():
     return render_template('AvgRatingByGenreDecade.html', title="Top Genres by Decade", data=TopGenresByDecade_data)
 
 @main_controller.route('/mostPopularGenreActorDirector_route')
-def mostPopularDenreActorDirector():
-    mostPopularDenreActorDirector_data = get_mostPopularGenreActorDirector()
-    return render_template('mostPopularGenreActorDirector.html', title="Most Popular Genre For Each Actor/Actress and Director", data=mostPopularDenreActorDirector_data)
+def mostPopularGenreActorDirector():
+    page = int(request.args.get('page', 1))
+    per_page = 20
+
+    mostPopularGenreActorDirector_data = get_mostPopularGenreActorDirector()
+
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+
+    paginated_data = mostPopularGenreActorDirector_data.iloc[start_idx:end_idx]
+
+    total_entries = len(mostPopularGenreActorDirector_data)
+    has_next = end_idx < total_entries
+    has_prev = start_idx > 0
+
+    return render_template(
+        'mostPopularGenreActorDirector.html',
+        title="Most Popular Genre For Each Actor/Actress and Director",
+        data=paginated_data,
+        page=page,
+        has_next=has_next,
+        has_prev=has_prev,
+    )
 
 
 @main_controller.route('/average_rating_for_actor_director_route', methods=['GET', 'POST'])
@@ -139,5 +159,7 @@ def search_graph():
         nNodes = request.form.get('num_nodes')
 
         path = get_graph(search_query, search_type, int(nNodes))
+        if path is None:
+            return render_template('searchGraph.html', message=f"There is no data on {search_query}")
         return render_template('searchGraph.html', image_path=path)
     return render_template("searchGraph.html")

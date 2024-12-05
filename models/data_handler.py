@@ -56,6 +56,8 @@ def get_rating_trends(person_name):
 
 def get_graph(search_query, search_type, nNodes):
     graph_data = get_edges_and_nodes(search_query, search_type, nNodes)
+    if graph_data is None:
+        return None
     create_and_save_custom_graph(graph_data,search_query, search_type, nNodes, "static/plots/graph.png")
     return "static/plots/graph.png"
 
