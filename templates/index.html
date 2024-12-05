@@ -4,29 +4,94 @@
 <html>
   <head>
     <title>4NF Web App</title>
+    <link rel="stylesheet" href="/static/css/index_style.css" />
   </head>
   <body>
-    <h1>Welcome to the Movie Analytics Web App</h1>
-    <a href="/search_graph">Vizualize Graph</a><br />
-    <a href="/AvgRatingFor10MinMovie_route"
-      >View Average Ratings of movies of each 10 Minutes Time Interval</a
-    ><br />
-    <a href="/AvgRatingByGenreDecade_route"
-      >View Average Ratings by Genre and Decade</a
-    ><br />
-    <a href="/mostPopularGenreActorDirector_route"
-      >View Most Popular Genre For Each Actor/Actress and Director</a
-    ><br />
-    <a href="/TopGenresByDecade_route">View Top Genres by Decade</a><br />
-    <a href="/average_rating_for_actor_director_route"
-      >Search for average rating for an actor and director</a
-    ><br />
-    <a href="/individualStatistics_route"
-      >Individual Statistics for Actor or Director</a
-    ><br />
-    <a href="/predictor">Predict Score for Hypothetical Movie</a><br />
-      <a href="/MostCollabPeople_route">Find people who have collaborated on the most number of movies</a><br></a>
-
-</body>
+    <div class="background-container">
+      <div class="content-container">
+        <h1 class="enhanced-header">Welcome to the Movie Analytics Web App</h1>
+  
+        <p class="website-intro">
+          This web application provides tools to analyze movie data using visualizations and analytics. Built with Neo4j and 
+          Apache Spark, the app allows users to explore trends, relationships, and statistics within the movie industry. 
+        </p>
+    
+        <div class="link-container">
+          <a href="/search_graph" class="link-title">Visualize Graph</a>
+          <p class="link-description">
+            View a graph of movie industry connections, including actors, directors, and their collaborations.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/AvgRatingFor10MinMovie_route" class="link-title">
+            Average Ratings for 10-Minute Intervals
+          </a>
+          <p class="link-description">
+            Analyze how movie ratings vary for films grouped by 10-minute runtime intervals.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/AvgRatingByGenreDecade_route" class="link-title">
+            Average Ratings by Genre and Decade
+          </a>
+          <p class="link-description">
+            Explore trends in average ratings for different genres over each decade and the top-rated movies of each genre.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/mostPopularGenreActorDirector_route" class="link-title">
+            Most Popular Genres for Actors and Directors
+          </a>
+          <p class="link-description">
+            Find the genres that actors and directors are most associated with, based on their movie ratings.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/TopGenresByDecade_route" class="link-title">Top Genres by Decade</a>
+          <p class="link-description">
+            See the highest-rated genres for each decade and the standout movies within them.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/average_rating_for_actor_director_route" class="link-title">
+            Average Ratings for Actors and Directors
+          </a>
+          <p class="link-description">
+            Search for an actor or director and get their average movie ratings.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/individualStatistics_route" class="link-title">
+            Individual Statistics
+          </a>
+          <p class="link-description">
+            Get detailed stats for a specific actor or director, including their rating trends over time.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/predictor" class="link-title">Predict Hypothetical Movie Score</a>
+          <p class="link-description">
+            Input movie details to predict its potential average score.
+          </p>
+        </div>
+    
+        <div class="link-container">
+          <a href="/MostCollabPeople_route" class="link-title">
+            Most Collaborated People
+          </a>
+          <p class="link-description">
+            Discover pairs of people who frequently collaborate on movies and the films they worked on together.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 {% endblock %}
